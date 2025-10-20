@@ -1,3 +1,4 @@
+// easygo aws helpers
 package aws
 
 import (
