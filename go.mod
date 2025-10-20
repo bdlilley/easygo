@@ -1,4 +1,4 @@
-module github.com/bdlilley/easy-go
+module github.com/bdlilley/easygo
 
 go 1.23
 
