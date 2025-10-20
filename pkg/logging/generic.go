@@ -1,9 +1,7 @@
 package logging
 
-// Logger is a generic logging interface that is directly compatible with slog.Logger
-type Logger interface {
-	Debug(msg string, args ...any)
-	Info(msg string, args ...any)
-	Warn(msg string, args ...any)
-	Error(msg string, args ...any)
-}
+import "github.com/sirupsen/logrus"
+
+// Logger is a generic logging interface that uses logrus.FieldLogger as the base
+// This provides full compatibility with Logrus while allowing for other implementations
+type Logger = logrus.FieldLogger

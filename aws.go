@@ -45,12 +45,12 @@ func NewAwsClient(ctx context.Context, args *NewEGAwsClientArgs) (*EGAwsClient, 
 	// Configure retry behavior
 	if args.RetryMaxAttempts > 0 {
 		configOpts = append(configOpts, config.WithRetryMaxAttempts(args.RetryMaxAttempts))
-		args.Logger.Debug("configured retry max attempts", "maxAttempts", args.RetryMaxAttempts)
+		args.Logger.WithField("maxAttempts", args.RetryMaxAttempts).Debug("configured retry max attempts")
 	}
 
 	if args.RetryMode != "" {
 		configOpts = append(configOpts, config.WithRetryMode(args.RetryMode))
-		args.Logger.Debug("configured retry mode", "mode", args.RetryMode)
+		args.Logger.WithField("mode", args.RetryMode).Debug("configured retry mode")
 	}
 
 	// Configure custom HTTP client if provided
@@ -68,7 +68,7 @@ func NewAwsClient(ctx context.Context, args *NewEGAwsClientArgs) (*EGAwsClient, 
 	stsClient := sts.NewFromConfig(cfg)
 
 	if args.AssumeRoleArn != "" {
-		args.Logger.Debug("AssumeRoleArn is set; assuming role", "roleArn", args.AssumeRoleArn)
+		args.Logger.WithField("roleArn", args.AssumeRoleArn).Debug("AssumeRoleArn is set; assuming role")
 		result, err := stsClient.AssumeRole(ctx, &sts.AssumeRoleInput{
 			RoleArn: aws.String(args.AssumeRoleArn),
 		})
@@ -83,7 +83,7 @@ func NewAwsClient(ctx context.Context, args *NewEGAwsClientArgs) (*EGAwsClient, 
 				Expires:         *result.Credentials.Expiration,
 			}, nil
 		}))
-		args.Logger.Debug("assume role successful", "roleArn", args.AssumeRoleArn)
+		args.Logger.WithField("roleArn", args.AssumeRoleArn).Debug("assume role successful")
 		stsClient = sts.NewFromConfig(cfg)
 	}
 
@@ -91,7 +91,7 @@ func NewAwsClient(ctx context.Context, args *NewEGAwsClientArgs) (*EGAwsClient, 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get caller identity: %w", err)
 	}
-	args.Logger.Debug("caller identity", "identity", id)
+	args.Logger.WithField("identity", id).Debug("caller identity")
 
 	secretsClient := secretsmanager.NewFromConfig(cfg)
 
