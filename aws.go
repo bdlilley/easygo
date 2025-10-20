@@ -1,5 +1,5 @@
 // easygo aws helpers
-package aws
+package easygo
 
 import (
 	"context"
