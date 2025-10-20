@@ -36,7 +36,7 @@ type NewEGAwsClientArgs struct {
 	HTTPClient *http.Client
 }
 
-func NewEGAwsClient(ctx context.Context, args *NewEGAwsClientArgs) (*EGAwsClient, error) {
+func NewAwsClient(ctx context.Context, args *NewEGAwsClientArgs) (*EGAwsClient, error) {
 	// Build config options
 	configOpts := []func(*config.LoadOptions) error{
 		config.WithRegion(args.Region),
